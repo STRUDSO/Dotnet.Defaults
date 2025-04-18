@@ -3,13 +3,13 @@ using Core;
 
 namespace Tests;
 
-public class UnitTest1
+public class IssuesShould
 {
 
     [Fact]
     public void OldVersion()
     {
-        Issue[] issues = NewMethod();
+        Issue[] issues = CheckChecker(new OldVersion());
 
         Assert.All(issues,
             i =>
@@ -21,10 +21,7 @@ public class UnitTest1
     [Fact]
     public void GitIgnore()
     {
-        var subjectPath = GetTestSubjectPath();
-        var solutionChecker = new SolutionChecker(subjectPath);
-
-        var issues = solutionChecker.Check(new GitIgnore());
+        Issue[] issues = CheckChecker(new OldVersion());
 
         Assert.All(issues,
             i =>
@@ -32,12 +29,12 @@ public class UnitTest1
                 Assert.Contains("missing .gitignore", i.Message);
             });
     }
-    private Issue[] NewMethod()
+    private Issue[] CheckChecker(ICheck check)
     {
         var subjectPath = GetTestSubjectPath();
         var solutionChecker = new SolutionChecker(subjectPath);
 
-        var issues = solutionChecker.Check(new OldVersion());
+        var issues = solutionChecker.Check(check);
         return issues;
     }
 
